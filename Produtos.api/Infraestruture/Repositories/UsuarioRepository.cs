@@ -23,7 +23,7 @@ namespace Produtos.Api.Infraestruture.Repositories
             _contexto.SaveChanges();
         }
 
-        public Usuario ObterUsuario(string login)
+        public Usuario? ObterUsuario(string login)
         {
             return _contexto.Usuario.FirstOrDefault(u => u.Login == login);
         }

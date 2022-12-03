@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Produtos.Api.Business.Entities;
 using Produtos.Api.Business.Repositories;
 using Produtos.Api.Models;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace Produtos.Api.Controllers
 {
@@ -26,10 +25,7 @@ namespace Produtos.Api.Controllers
         /// Este serviço permite obter todos as compras
         /// </summary>
         /// <returns>Retorna status ok e dados das compras</returns>
-        [SwaggerResponse(statusCode: 200, description: "Sucesso ao obter as compras")]
-        [SwaggerResponse(statusCode: 401, description: "Não autorizado")]
-        [HttpGet]
-        [Route("listar")]
+        [HttpGet("listar")]
         public async Task<IActionResult> Get()
         {
             var compras = _compraRepository.Obter()
@@ -47,10 +43,7 @@ namespace Produtos.Api.Controllers
         /// </summary>
         /// <param name="compraViewModel"></param>
         /// <returns>Retorna status 201 e dados da compra/returns>
-        [SwaggerResponse(statusCode: 201, description: "Sucesso ao cadastrar um produto")]
-        [SwaggerResponse(statusCode: 401, description: "Não autorizado")]
-        [HttpPost]
-        [Route("cadastrar")]
+        [HttpPost("cadastrar")]
         public async Task<IActionResult> Post(CompraViewModel compraViewModel)
         {
             var produto = _produtoRepository.ObterProduto(compraViewModel.Produto);

@@ -4,6 +4,6 @@ namespace Produtos.Api.Configurations
 {
     public interface IAutenticacaoService
     {
-        string GerarToken(UsuarioViewModelOutput usuarioViewModelOutput);
+        string GerarToken(UsuarioViewModel usuarioViewModel);
     }
 }

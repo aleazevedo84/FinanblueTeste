@@ -15,7 +15,7 @@ namespace Produtos.Api.Configurations
             _configuration = configuration;
         }
 
-        public string GerarToken(UsuarioViewModelOutput usuarioViewModelOutput)
+        public string GerarToken(UsuarioViewModel usuarioViewModel)
         {
             var secret = Encoding.ASCII.GetBytes(_configuration.GetSection("JwtConfiguration:Secret").Value);
             var symmetricSecurityKey = new SymmetricSecurityKey(secret);
@@ -23,9 +23,9 @@ namespace Produtos.Api.Configurations
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, usuarioViewModelOutput.Id.ToString()),
-                    new Claim(ClaimTypes.Name, usuarioViewModelOutput.Login.ToString()),
-                    new Claim(ClaimTypes.Email, usuarioViewModelOutput.Email.ToString())
+                    new Claim(ClaimTypes.NameIdentifier, usuarioViewModel.Id.ToString()),
+                    new Claim(ClaimTypes.Name, usuarioViewModel.Login.ToString()),
+                    new Claim(ClaimTypes.Email, usuarioViewModel.Email.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature)

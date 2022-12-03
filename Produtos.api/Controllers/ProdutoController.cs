@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Produtos.Api.Business.Entities;
 using Produtos.Api.Business.Repositories;
 using Produtos.Api.Models;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace Produtos.Api.Controllers
 {
@@ -26,10 +25,7 @@ namespace Produtos.Api.Controllers
         /// Este serviço permite obter todos os produtos
         /// </summary>
         /// <returns>Retorna status ok e dados dos produtos</returns>
-        [SwaggerResponse(statusCode: 200, description: "Sucesso ao obter os produtos")]
-        [SwaggerResponse(statusCode: 401, description: "Não autorizado")]
-        [HttpGet]
-        [Route("listar")]
+        [HttpGet("listar")]
         public async Task<IActionResult> Get()
         {
             var produtos = _produtoRepository.Obter()
@@ -37,7 +33,8 @@ namespace Produtos.Api.Controllers
                 {
                     Nome = s.Nome,
                     Valor = s.Valor,
-                    Empresa = s.EmpresaId
+                    Empresa = s.EmpresaId,
+                    Situacao = s.Situacao
                 });
 
             return Ok(produtos);
@@ -48,10 +45,7 @@ namespace Produtos.Api.Controllers
         /// </summary>
         /// <param name="produtoViewModel"></param>
         /// <returns>Retorna status 201 e dados do produto/returns>
-        [SwaggerResponse(statusCode: 201, description: "Sucesso ao cadastrar um produto")]
-        [SwaggerResponse(statusCode: 401, description: "Não autorizado")]
-        [HttpPost]
-        [Route("cadastrar")]
+        [HttpPost("cadastrar")]
         public async Task<IActionResult> Post(ProdutoViewModel produtoViewModel)
         {
             var empresa = _empresaRepository.ObterEmpresa(produtoViewModel.Empresa);
@@ -64,6 +58,7 @@ namespace Produtos.Api.Controllers
             produto.Nome = produtoViewModel.Nome;
             produto.Valor = produtoViewModel.Valor;
             produto.EmpresaId = produtoViewModel.Empresa;
+            produto.Situacao = produtoViewModel.Situacao;
 
             _produtoRepository.Adicionar(produto);
             _produtoRepository.Commit();

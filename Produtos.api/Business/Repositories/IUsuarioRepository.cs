@@ -6,6 +6,6 @@ namespace Produtos.Api.Business.Repositories
     {
         void Adicionar(Usuario usuario);
         void Commit();
-        Usuario ObterUsuario(string login);
+        Usuario? ObterUsuario(string login);
     }
 }

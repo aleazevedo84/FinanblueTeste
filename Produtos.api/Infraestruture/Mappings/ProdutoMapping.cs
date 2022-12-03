@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Produtos.Api.Business.Entities;
+using Produtos.Api.Business.Enum;
 
 namespace Produtos.Api.Infraestruture.Mappings
 {
@@ -19,6 +20,8 @@ namespace Produtos.Api.Infraestruture.Mappings
                 .IsRequired();
             builder.HasOne(p => p.Empresa)
                 .WithMany().HasForeignKey(fk => fk.EmpresaId);
+            builder.Property(p => p.Situacao)
+                .HasDefaultValue(Situacao.Ativo);
         }
     }
 }

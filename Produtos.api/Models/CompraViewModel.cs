@@ -1,6 +1,4 @@
-﻿using Produtos.Api.Business.Entities;
-
-namespace Produtos.Api.Models
+﻿namespace Produtos.Api.Models
 {
     public class CompraViewModel
     {

@@ -2,9 +2,7 @@
 using Produtos.Api.Business.Entities;
 using Produtos.Api.Business.Repositories;
 using Produtos.Api.Configurations;
-using Produtos.Api.Filters;
 using Produtos.Api.Models;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace Produtos.Api.Controllers
 {
@@ -25,52 +23,42 @@ namespace Produtos.Api.Controllers
         /// </summary>
         /// <param name="loginViewModelInput">View model do login</param>
         /// <returns>Retorna status ok, dados do usuario e o token em caso de sucesso</returns>
-        [SwaggerResponse(statusCode: 200, description: "Sucesso ao autenticar", Type = typeof(LoginViewModelInput))]
-        [SwaggerResponse(statusCode: 400, description: "Campos obrigatórios", Type = typeof(ValidaCampoViewModelOutput))]
-        [SwaggerResponse(statusCode: 500, description: "Erro interno", Type = typeof(ErroGenericoViewModel))]
-        [HttpPost]
-        [Route("logar")]
-        [ValidacaoModelStateCustomizado]
-        public IActionResult Logar(LoginViewModelInput loginViewModelInput)
+        [HttpPost("logar")]
+        public IActionResult Logar(LoginViewModel loginViewModel)
         {
-            var usuario = _usuarioRepository.ObterUsuario(loginViewModelInput.Login);
+            var usuario = _usuarioRepository.ObterUsuario(loginViewModel.Login);
 
             if (usuario == null)
             {
                 return BadRequest("Usuário inválido.");
             }
-            else if (usuario.Senha != loginViewModelInput.Senha)
+            else if (usuario.Senha != loginViewModel.Senha)
             {
                 return BadRequest("Senha incorreta.");
             }
 
-            var usuarioViewModelOutput = new UsuarioViewModelOutput()
+            var usuarioViewModel = new UsuarioViewModel()
             {
                 Id = usuario.Id,
-                Login = loginViewModelInput.Login,
+                Login = loginViewModel.Login,
                 Email = usuario.Email
             };
 
-            var token = _authenticationService.GerarToken(usuarioViewModelOutput);
+            var token = _authenticationService.GerarToken(usuarioViewModel);
 
             return Ok(new
             {
                 Token = token,
-                Usuario = usuarioViewModelOutput
+                Usuario = usuarioViewModel
             });
         }
 
         /// <summary>
         /// Este serviço permite cadastrar um usuário não existente
         /// </summary>
-        /// <param name="loginViewModelInput">View model do registro de login</param>
+        /// <param name="loginViewModel">View model do registro de login</param>
         /// <returns></returns>
-        [SwaggerResponse(statusCode: 200, description: "Sucesso ao autenticar", Type = typeof(LoginViewModelInput))]
-        [SwaggerResponse(statusCode: 400, description: "Campos obrigatórios", Type = typeof(ValidaCampoViewModelOutput))]
-        [SwaggerResponse(statusCode: 500, description: "Erro interno", Type = typeof(ErroGenericoViewModel))]
-        [HttpPost]
-        [Route("registrar")]
-        [ValidacaoModelStateCustomizado]
+        [HttpPost("registrar")]
         public IActionResult Registrar(RegistroViewModel registroViewModel)
         {
             var usuario = new Usuario();
