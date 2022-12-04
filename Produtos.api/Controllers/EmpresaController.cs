@@ -54,7 +54,6 @@ namespace Produtos.Api.Controllers
             empresa.Situacao = empresaViewModel.Situacao;
 
             _empresaRepository.Adicionar(empresa);
-            _empresaRepository.Commit();
             return Created("", empresaViewModel);
         }
     }

@@ -5,7 +5,6 @@ namespace Produtos.Api.Business.Repositories
     public interface ICompraRepository
     {
         void Adicionar(Compra empresa);
-        void Commit();
         IList<Compra> Obter();
     }
 }

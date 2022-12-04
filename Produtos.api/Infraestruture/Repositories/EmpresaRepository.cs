@@ -16,13 +16,8 @@ namespace Produtos.Api.Infraestruture.Repositories
         public void Adicionar(Empresa empresa)
         {
             _contexto.Empresa.Add(empresa);
-        }
-
-        public void Commit()
-        {
             _contexto.SaveChanges();
         }
-
         public IList<Empresa> Obter()
         {
             return _contexto.Empresa.ToList();

@@ -15,9 +15,6 @@ namespace Produtos.Api.Infraestruture.Repositories
         public void Adicionar(Produto produto)
         {
             _contexto.Produto.Add(produto);
-        }
-        public void Commit()
-        {
             _contexto.SaveChanges();
         }
         public IList<Produto> Obter()

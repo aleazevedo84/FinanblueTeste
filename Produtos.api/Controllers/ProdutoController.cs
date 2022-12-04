@@ -61,7 +61,6 @@ namespace Produtos.Api.Controllers
             produto.Situacao = produtoViewModel.Situacao;
 
             _produtoRepository.Adicionar(produto);
-            _produtoRepository.Commit();
             return Created("", produtoViewModel);
         }
     }

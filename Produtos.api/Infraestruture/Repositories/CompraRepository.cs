@@ -16,13 +16,8 @@ namespace Produtos.Api.Infraestruture.Repositories
         public void Adicionar(Compra compra)
         {
             _contexto.Compra.Add(compra);
-        }
-
-        public void Commit()
-        {
             _contexto.SaveChanges();
         }
-
         public IList<Compra> Obter()
         {
             return _contexto.Compra.ToList();

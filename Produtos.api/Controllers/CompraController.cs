@@ -57,7 +57,6 @@ namespace Produtos.Api.Controllers
             compra.Quantidade = compraViewModel.Quantidade;
 
             _compraRepository.Adicionar(compra);
-            _compraRepository.Commit();
             return Created("", compraViewModel);
         }
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Produtos.Api.Business.Entities;
 using Produtos.Api.Business.Repositories;
 using Produtos.Api.Configurations;
@@ -26,32 +27,27 @@ namespace Produtos.Api.Controllers
         [HttpPost("logar")]
         public IActionResult Logar(LoginViewModel loginViewModel)
         {
-            var usuario = _usuarioRepository.ObterUsuario(loginViewModel.Login);
-
-            if (usuario == null)
+            var valido = _usuarioRepository.ValidaSenha(loginViewModel);
+            if (valido)
             {
-                return BadRequest("Usuário inválido.");
+                var usuario = _usuarioRepository.ObterUsuario(loginViewModel.Login);
+                var usuarioViewModel = new UsuarioViewModel()
+                {
+                    Id = usuario.Id,
+                    Login = loginViewModel.Login,
+                    Email = usuario.Email
+                };
+
+                var token = _authenticationService.GerarToken(usuarioViewModel);
+
+                return Ok(new
+                {
+                    Token = token,
+                    Usuario = usuarioViewModel
+                });
             }
-            else if (usuario.Senha != loginViewModel.Senha)
-            {
-                return BadRequest("Senha incorreta.");
-            }
-
-            var usuarioViewModel = new UsuarioViewModel()
-            {
-                Id = usuario.Id,
-                Login = loginViewModel.Login,
-                Email = usuario.Email
-            };
-
-            var token = _authenticationService.GerarToken(usuarioViewModel);
-
-            return Ok(new
-            {
-                Token = token,
-                Usuario = usuarioViewModel
-            });
-        }
+            return Unauthorized();            
+        } 
 
         /// <summary>
         /// Este serviço permite cadastrar um usuário não existente
@@ -66,7 +62,6 @@ namespace Produtos.Api.Controllers
             usuario.Senha = registroViewModel.Senha;
             usuario.Email = registroViewModel.Email;
             _usuarioRepository.Adicionar(usuario);
-            _usuarioRepository.Commit();
 
             return Created("", registroViewModel);
         }
