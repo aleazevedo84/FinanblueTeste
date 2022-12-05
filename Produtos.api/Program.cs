@@ -68,7 +68,7 @@ builder.Services.AddAuthentication(x =>
 
 builder.Services.AddDbContext<ApiDBContext>(option =>
 {
-    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    option.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection"));
 });
 
 builder.Services.AddScoped<IEmpresaRepository, EmpresaRepository>();
@@ -76,7 +76,6 @@ builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddScoped<ICompraRepository, CompraRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IAutenticacaoService, AutenticacaotService>();
-
 
 var app = builder.Build();
 
